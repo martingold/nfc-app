@@ -1,10 +1,12 @@
 package com.martingold.nfcreader.Write;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martingold.nfcreader.R;
@@ -29,7 +31,12 @@ public class WriteListAdapter extends ArrayAdapter<Item> {
         Item p = getItem(position);
         if (p != null) {
             TextView name = (TextView) v.findViewById(R.id.row_write_item_name);
+            ImageView thumb = (ImageView) v.findViewById(R.id.row_write_item_thumb);
+            if(p.getTag_id() == 0){
+                thumb.setVisibility(View.INVISIBLE);
+            }
             name.setText(p.getName());
+
         }
         return v;
     }

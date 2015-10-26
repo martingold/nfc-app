@@ -8,6 +8,8 @@ public class Constants {
   public static String server = "http://192.168.1.19/";
   //public static String server = "http://www.nfcreader.hol.es/";
 
+  public static String MIME = "application/com.martingold.nfcreader";
+
 
 
 }

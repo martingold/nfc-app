@@ -41,6 +41,11 @@ class NdefParser extends AsyncTask<String, Void, String> {
 
         NdefRecord[] records = ndefMessage.getRecords();
         for (NdefRecord ndefRecord : records) {
+            try {
+                Log.i("nfc", "" + readText(ndefRecord));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             if (ndefRecord.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(ndefRecord.getType(), NdefRecord.RTD_TEXT)) {
                 try {
                     return readText(ndefRecord);

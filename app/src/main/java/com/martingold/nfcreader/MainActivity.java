@@ -20,7 +20,7 @@ import com.martingold.nfcreader.Write.activity_login;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "nfc-reader";
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Runnable shake;
     Timer timer;
     PathView pathView;
-/*
+
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_main;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected String getServiceName() {
         return "main";
     }
-*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

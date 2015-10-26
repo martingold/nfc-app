@@ -4,20 +4,25 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.martingold.nfcreader.Utils.Constants;
 
 /**
  * Created by martin on 22.10.15.
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
-    public static final String MIME_TEXT_PLAIN = "text/plain";
+    public static String MIME;
     public static final String TAG = "nfc-reader";
     private NfcAdapter mNfcAdapter;
 
@@ -32,6 +37,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResourceId());
+
+        MIME = Constants.MIME;
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
@@ -48,6 +55,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onResume();
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction()) && !isRead) {
             handleIntent(getIntent());
+            Log.i("nfc", "LAUNCH INTENT");
 
         }
         setupForegroundDispatch(this, mNfcAdapter);
@@ -69,37 +77,13 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private void handleIntent(Intent intent) {
         isRead = true;
-        String action = intent.getAction();
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-            String type = intent.getType();
-            if (MIME_TEXT_PLAIN.equals(type)) {
-                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                new NdefParser(new NdefParser.NdefParserListener() {
-                    @Override
-                    public void onNdefDone(String response, String status) {
-                        launchContentActivity(Integer.parseInt(response));
-                    }
-                }, tag);
-            } else {
-                Log.d(TAG, "Wrong mime type: " + type);
-            }
-        } else if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            String[] techList = tag.getTechList();
-            String searchedTech = Ndef.class.getName();
-            for (String tech : techList) {
-                if (searchedTech.equals(tech)) {
-                    Log.i("nfc", "handleIntent");
-                    new NdefParser(new NdefParser.NdefParserListener() {
-                        @Override
-                        public void onNdefDone(String response, String status) {
-                            launchContentActivity(Integer.parseInt(response));
-                        }
-                    }, tag);
 
-                    break;
-                }
-            }
+        if(intent.getType() != null && intent.getType().equals("application/" + getPackageName())) {
+            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            NdefRecord record = ((NdefMessage) rawMsgs[0]).getRecords()[0];
+            String nfcData = new String(record.getPayload());
+
+            launchContentActivity(Integer.parseInt(nfcData));
         }
     }
 
@@ -113,7 +97,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
         filters[0].addCategory(Intent.CATEGORY_DEFAULT);
         try {
-            filters[0].addDataType(MIME_TEXT_PLAIN);
+            filters[0].addDataType(MIME);
         } catch (IntentFilter.MalformedMimeTypeException e) {
             throw new RuntimeException("Check your mime type.");
         }
