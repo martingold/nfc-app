@@ -1,6 +1,5 @@
-package com.martingold.nfcreader;
+package com.martingold.nfcreader.Write;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,10 +11,13 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.martingold.nfcreader.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -24,7 +26,7 @@ import java.util.Locale;
 /**
  * Created by martin on 26.10.15.
  */
-    public class WriteActivity extends Activity {
+    public class WriteActivity extends AppCompatActivity {
         NfcAdapter nfcAdapter;
 
         @Override
@@ -50,6 +52,7 @@ import java.util.Locale;
         @Override
         protected void onNewIntent(Intent intent) {
             super.onNewIntent(intent);
+            Log.i("nfc", "NEW INTENT");
             if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
                 Toast.makeText(this, "NfcIntent!", Toast.LENGTH_SHORT).show();
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -72,7 +75,7 @@ import java.util.Locale;
 
 
         private void enableForegroundDispatchSystem() {
-            Intent intent = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+            Intent intent = new Intent(this, WriteActivity.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             IntentFilter[] intentFilters = new IntentFilter[]{};
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
@@ -151,9 +154,7 @@ import java.util.Locale;
 
             NdefRecord ndefRecord = createTextRecord(content);
 
-            NdefMessage ndefMessage = new NdefMessage(new NdefRecord[]{ndefRecord});
-
-            return ndefMessage;
+            return new NdefMessage(new NdefRecord[]{ndefRecord});
         }
 
     }
