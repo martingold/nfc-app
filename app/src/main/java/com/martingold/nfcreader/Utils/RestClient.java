@@ -14,7 +14,6 @@ public class RestClient {
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
-        Log.i("nfc", getAbsoluteUrl(url));
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
@@ -22,6 +21,8 @@ public class RestClient {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        return BASE_URL + relativeUrl;
+        String URL = Constants.server+"/api/"+ relativeUrl;
+        Log.i("nfc", URL);
+        return URL;
     }
 }

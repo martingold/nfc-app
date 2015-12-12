@@ -27,6 +27,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.martingold.nfcreader.R;
 import com.martingold.nfcreader.Utils.App;
+import com.martingold.nfcreader.Utils.Constants;
 import com.martingold.nfcreader.Utils.Methods;
 import com.martingold.nfcreader.Utils.RestClient;
 
@@ -53,10 +54,15 @@ import cz.msebera.android.httpclient.Header;
         List<Item> iList;
         WriteListAdapter adapter;
 
+        String URL = "";
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_write);
+
+            URL = Constants.getSimpleServerName();
+
             d = new Dialog(WriteActivity.this);
             d.setTitle("Přiložte NFC Tag");
             d.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -125,9 +131,8 @@ import cz.msebera.android.httpclient.Header;
             NdefRecord appRecord = NdefRecord.createApplicationRecord(getApplicationContext().getPackageName());
             NdefRecord relayRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                     new String("application/" + getApplicationContext().getPackageName()).getBytes(Charset.forName("US-ASCII")),
-                    null, (itemId+"").getBytes());
-            NdefMessage message = new NdefMessage(new NdefRecord[] {relayRecord, appRecord});
-            return message;
+                    null, (itemId+"@"+URL).getBytes());
+            return new NdefMessage(new NdefRecord[] {relayRecord, appRecord});
         }
 
 
@@ -248,7 +253,7 @@ import cz.msebera.android.httpclient.Header;
                     //Toast.makeText(this, "Tag writen!", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
-                Log.e("writeNdefMessage", e.getMessage());
+                Log.e("writeNdefMessage", ""+e.getMessage());
             }
         }
 
@@ -279,8 +284,9 @@ import cz.msebera.android.httpclient.Header;
         private NdefMessage createNdefMessage(String content) {
 
             NdefRecord ndefRecord = createTextRecord(content);
+            NdefRecord hostURL = createTextRecord(Constants.server);
 
-            return new NdefMessage(new NdefRecord[]{ndefRecord});
+            return new NdefMessage(new NdefRecord[]{ndefRecord, hostURL});
         }
 
     }

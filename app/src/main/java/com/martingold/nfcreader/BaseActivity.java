@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.martingold.nfcreader.Utils.Constants;
 
+import java.util.Arrays;
+
 /**
  * Created by martin on 22.10.15.
  */
@@ -82,8 +84,16 @@ public abstract class BaseActivity extends ActionBarActivity {
             Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             NdefRecord record = ((NdefMessage) rawMsgs[0]).getRecords()[0];
             String nfcData = new String(record.getPayload());
+            if(nfcData.contains("@")){
+                String[] data = nfcData.split("@");
+                String host = data[1];
+                String id = data [0];
+                Constants.setServer(host);
+                launchContentActivity(Integer.parseInt(id));
+            }else{
+                Toast.makeText(BaseActivity.this, "Neplatná nálepka", Toast.LENGTH_SHORT).show();
+            }
 
-            launchContentActivity(Integer.parseInt(nfcData));
         }
     }
 
