@@ -65,7 +65,7 @@ public class activity_login extends AppCompatActivity {
                                 if(response.getString("status").equals("error")){
                                     Toast.makeText(activity_login.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                                 }else{
-                                    Toast.makeText(activity_login.this, "SUCESS: "+response.getString("message"), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(activity_login.this, "SUCESS: "+response.getString("message"), Toast.LENGTH_SHORT).show();
                                     ((App) getApplicationContext()).id = Integer.parseInt(response.getString("message"));
                                     startActivity(new Intent(activity_login.this, WriteActivity.class));
                                     Methods.setSharedPref(activity_login.this, "login", name.getText().toString().trim());

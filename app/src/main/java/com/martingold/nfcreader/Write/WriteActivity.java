@@ -160,13 +160,7 @@ import cz.msebera.android.httpclient.Header;
                                 d.dismiss();
                             }
                             iList.get(selectedItemPos).setTag_id(tagId);
-                            for(Item item: iList){
-                                Log.i("nfc", tagId + " : " + item.getTag_id());
-                                if(item.getTag_id() == tagId){
-                                    item.setTag_id(0);
-                                    Toast.makeText(WriteActivity.this, "Toto místo je již přiřazeno k nálepce", Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                            Toast.makeText(WriteActivity.this, "Tag úspěšně přiřazen", Toast.LENGTH_SHORT).show();
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

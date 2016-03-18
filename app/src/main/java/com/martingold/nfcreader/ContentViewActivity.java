@@ -67,7 +67,7 @@ public class ContentViewActivity extends BaseActivity {
 
 
                 } catch (JSONException e) {
-                    Toast.makeText(ContentViewActivity.this, "Tato nálepka (id="+id+") nebyla nalezena", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ContentViewActivity.this, "Toto místo nebylo nalezeno", Toast.LENGTH_LONG).show();
                     finish();
                     e.printStackTrace();
                 }

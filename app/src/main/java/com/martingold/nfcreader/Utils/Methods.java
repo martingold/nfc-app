@@ -3,6 +3,7 @@ package com.martingold.nfcreader.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.webkit.URLUtil;
 
 /**
@@ -46,5 +47,11 @@ public class Methods {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         editor.commit();
+    }
+
+    public static int dpToPx(int dp, Context c) {
+        DisplayMetrics displayMetrics = c.getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
 }

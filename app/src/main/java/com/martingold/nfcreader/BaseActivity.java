@@ -57,8 +57,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onResume();
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction()) && !isRead) {
             handleIntent(getIntent());
-            Log.i("nfc", "LAUNCH INTENT");
-
         }
         setupForegroundDispatch(this, mNfcAdapter);
     }
@@ -79,7 +77,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private void handleIntent(Intent intent) {
         isRead = true;
-
         if(intent.getType() != null && intent.getType().equals("application/" + getPackageName())) {
             Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             NdefRecord record = ((NdefMessage) rawMsgs[0]).getRecords()[0];

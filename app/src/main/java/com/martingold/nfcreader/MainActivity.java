@@ -14,6 +14,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.eftimoff.androipathview.PathView;
 import com.martingold.nfcreader.Utils.App;
+import com.martingold.nfcreader.Utils.Methods;
 import com.martingold.nfcreader.Write.WriteActivity;
 import com.martingold.nfcreader.Write.activity_login;
 
@@ -45,11 +46,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pathView = (PathView) findViewById(R.id.pathView);
+        pathView.setPathWidth(Methods.dpToPx(6, this));
         pathView.useNaturalColors();
-
-
-
-
 
         YoYo.with(Techniques.SlideInUp)
                 .duration(2000)
