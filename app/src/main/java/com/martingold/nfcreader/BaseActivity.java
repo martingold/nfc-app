@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -43,10 +44,17 @@ public abstract class BaseActivity extends ActionBarActivity {
         MIME = Constants.MIME;
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
         if (mNfcAdapter == null) {
-            Toast.makeText(this, "Toto zařízení nepodporuje NFC.", Toast.LENGTH_LONG).show();
-            finish();
+                Toast.makeText(this, "Toto zařízení nepodporuje NFC.", Toast.LENGTH_LONG).show();
+                finish();
             return;
+        }else{
+            if (!mNfcAdapter.isEnabled()) {
+                Toast.makeText(this, "Povolte NFC.", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+                finish();
+            }
         }
         mPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
