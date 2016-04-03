@@ -53,7 +53,7 @@ public class ContentViewActivity extends BaseActivity {
 
                     name.setText(item.getString("name"));
                     description.setText(item.getString("description"));
-                    Picasso.with(ContentViewActivity.this).load(Constants.server+"assets/images/"+item.getString("image")+".jpg").into(image, new com.squareup.picasso.Callback() {
+                    Picasso.with(ContentViewActivity.this).load(Constants.server.toLowerCase()+"/assets/images/"+item.getString("image")+".jpg").into(image, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
                             image.setVisibility(View.VISIBLE);
